@@ -1,98 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lamatic Bot - Sally</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lamatic Bot</title>
   <style>
-    /* Metallic gradient background */
+    /* Metallic Robot Theme */
     body {
       margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #2c2c2c, #4b4b4b, #1a1a1a);
-      color: #e0e0e0;
+      background: linear-gradient(135deg, #2c2c2c, #4f4f4f, #1a1a1a);
+      color: #f5f5f5;
+      text-align: center;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
-      overflow: hidden;
+      align-items: center;
     }
 
     h1 {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
-      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+      color: #ef4444; /* Red accent */
+      text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
     }
 
     p {
-      font-size: 1.2rem;
       max-width: 600px;
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #cfcfcf;
+      margin: 0 auto 2rem;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #d1d5db;
     }
 
-    /* Futuristic glow border box for content */
-    .intro-box {
-      padding: 20px 40px;
-      border: 2px solid rgba(0, 255, 247, 0.6);
-      border-radius: 12px;
-      background: rgba(30, 30, 30, 0.8);
-      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
-      backdrop-filter: blur(6px);
-    }
-
-    /* Smooth animation for text glow */
-    @keyframes glow {
-      0% { text-shadow: 0 0 10px #00fff7; }
-      50% { text-shadow: 0 0 20px #00fff7; }
-      100% { text-shadow: 0 0 10px #00fff7; }
-    }
-
-    h1 {
-      animation: glow 2s infinite;
+    /* Optional glowing border for fun */
+    .glow-box {
+      border: 2px solid #ef4444;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+      background: rgba(0,0,0,0.4);
     }
   </style>
 </head>
 <body>
-  <div class="intro-box">
+  <div class="glow-box">
     <h1>🤖 Welcome to Sally!</h1>
-    <p>Lamatic's friendly AI bot is here to help you explore AI agent automation. 
-    Ask me anything about Lamatic, and I'll guide you like your own virtual AI assistant!</p>
+    <p>Lamatic's friendly AI bot is ready to assist you with anything about Lamatic and AI Agents. Just open the chat widget on the bottom-right to start!</p>
   </div>
 
-  <div id="lamatic-chat-root"></div>
-
-  <script>
-    // Persistent User ID via localStorage
-    let lamaticUserId = localStorage.getItem('lamaticUserId');
-    if (!lamaticUserId) {
-      lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('lamaticUserId', lamaticUserId);
-    }
-
-    const PROJECT_ID = '99ca9e13-c53c-467b-9bfa-0395920d7db4';
-    const FLOW_ID = '80de4949-56a6-4989-9d8a-35e439db15a8';
-    const API_URL = 'https://jayamsorganization109-testproject981.lamatic.dev';
-
-    const root = document.getElementById('lamatic-chat-root');
-    root.dataset.apiUrl = API_URL;
-    root.dataset.flowId = FLOW_ID;
-    root.dataset.projectId = PROJECT_ID;
-    root.dataset.userId = lamaticUserId;
-
-    const script = document.createElement("script");
-    script.type = "module";
-    script.src = `https://widget.lamatic.ai/chat-v2?projectId=${PROJECT_ID}`;
-    document.body.appendChild(script);
-
-    // Optional: Auto-open the widget on page load for demo
-    window.addEventListener('lamaticChatWidgetReady', function() {
-      if (window.LamaticChatWidget) {
-        window.LamaticChatWidget.open();
-      }
-    });
-  </script>
+  <!-- Lamatic Widget Script (Option 1: Auto userId & session management) -->
+  <script type="module" src="https://widget.lamatic.ai/chat-v2?projectId=99ca9e13-c53c-467b-9bfa-0395920d7db4"></script>
 </body>
 </html>
