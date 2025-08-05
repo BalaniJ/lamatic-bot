@@ -112,13 +112,10 @@
                 window.LamaticChatWidget.setUserId(lamaticUserId);
                 window.LamaticChatWidget.open();
                 console.log('setUserId called with:', lamaticUserId);
-                // Uniform font & bubble sizing for both user and agent messages
+                // Uniform styling for user and agent chat bubbles
                 const style = document.createElement('style');
                 style.innerHTML = `
-                    #lamatic-chat-root [id^="lam-chat-message-bubble-"],
-                    #lamatic-chat-root .lam-chat-user-message-content-*,
-                    #lamatic-chat-root .lam-chat-bot-message-content-*,
-                    #lamatic-chat-root .lam-chat-whitespace-pre-wrap {
+                    .chat-bubble {
                         font-size: 14px !important;
                         padding: 10px 14px !important;
                         line-height: 1.4 !important;
@@ -128,11 +125,26 @@
                         border-radius: 8px !important;
                         word-break: break-word !important;
                         overflow-wrap: break-word !important;
+                        margin: 5px 10px !important;
+                    }
+                    #lamatic-chat-root [id^="lam-chat-message-bubble-"],
+                    #lamatic-chat-root .lam-chat-user-message-content-*,
+                    #lamatic-chat-root .lam-chat-bot-message-content-*,
+                    #lamatic-chat-root .lam-chat-whitespace-pre-wrap,
+                    #lamatic-chat-root .lam-chat-bg-secondary {
+                        @extend .chat-bubble;
                     }
                     #lamatic-chat-root .lam-chat-message-input {
                         font-size: 14px !important;
                         color: #ffffff !important;
                         padding: 10px 14px !important;
+                        background-color: rgb(27, 55, 111) !important;
+                        border-radius: 8px !important;
+                    }
+                    #lamatic-chat-root .lam-chat-prose p {
+                        margin: 0 !important;
+                        font-size: 14px !important;
+                        line-height: 1.4 !important;
                     }
                 `;
                 document.head.appendChild(style);
