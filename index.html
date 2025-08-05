@@ -132,7 +132,16 @@
                     #lamatic-chat-root .lam-chat-bot-message-content-*,
                     #lamatic-chat-root .lam-chat-whitespace-pre-wrap,
                     #lamatic-chat-root .lam-chat-bg-secondary {
-                        @extend .chat-bubble;
+                        font-size: 14px !important;
+                        padding: 10px 14px !important;
+                        line-height: 1.4 !important;
+                        color: #ffffff !important;
+                        background-color: rgb(27, 55, 111) !important;
+                        max-width: 80% !important;
+                        border-radius: 8px !important;
+                        word-break: break-word !important;
+                        overflow-wrap: break-word !important;
+                        margin: 5px 10px !important;
                     }
                     #lamatic-chat-root .lam-chat-message-input {
                         font-size: 14px !important;
@@ -145,6 +154,12 @@
                         margin: 0 !important;
                         font-size: 14px !important;
                         line-height: 1.4 !important;
+                        text-align: left !important;
+                    }
+                    #lamatic-chat-root .lam-chat-bg-secondary,
+                    #lamatic-chat-root .lam-chat-flex.lam-chat-flex-col {
+                        text-align: left !important;
+                        justify-content: flex-start !important;
                     }
                 `;
                 document.head.appendChild(style);
