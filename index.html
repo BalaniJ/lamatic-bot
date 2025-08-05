@@ -52,7 +52,7 @@
     </div>
     <div id="lamatic-chat-root"></div>
     <script>
-        // 1️⃣ Persistent User ID (simpler format)
+        // 1️⃣ Persistent User ID
         let lamaticUserId = localStorage.getItem('lamaticUserId');
         if (!lamaticUserId) {
             lamaticUserId = 'user' + Math.floor(Math.random() * 1000000); // e.g., user123456
@@ -79,7 +79,9 @@
                 console.log('Intercepted /widget/chat payload:', JSON.parse(options.body));
                 options.headers = {
                     ...options.headers,
-                    'x-project-id': PROJECT_ID
+                    'x-project-id': PROJECT_ID,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 };
             }
             try {
@@ -110,21 +112,27 @@
                 window.LamaticChatWidget.setUserId(lamaticUserId);
                 window.LamaticChatWidget.open();
                 console.log('setUserId called with:', lamaticUserId);
-                // Uniform font & bubble sizing
+                // Uniform font & bubble sizing for both user and agent messages
                 const style = document.createElement('style');
                 style.innerHTML = `
                     #lamatic-chat-root [id^="lam-chat-message-bubble-"],
                     #lamatic-chat-root .lam-chat-user-message-content-*,
-                    #lamatic-chat-root .lam-chat-bot-message-content-* {
+                    #lamatic-chat-root .lam-chat-bot-message-content-*,
+                    #lamatic-chat-root .lam-chat-whitespace-pre-wrap {
                         font-size: 14px !important;
                         padding: 10px 14px !important;
                         line-height: 1.4 !important;
                         color: #ffffff !important;
-                        background-color: transparent !important;
+                        background-color: rgb(27, 55, 111) !important;
+                        max-width: 80% !important;
+                        border-radius: 8px !important;
+                        word-break: break-word !important;
+                        overflow-wrap: break-word !important;
                     }
                     #lamatic-chat-root .lam-chat-message-input {
                         font-size: 14px !important;
                         color: #ffffff !important;
+                        padding: 10px 14px !important;
                     }
                 `;
                 document.head.appendChild(style);
