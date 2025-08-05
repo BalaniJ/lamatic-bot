@@ -1,96 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lamatic Bot - Sally</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2c2c2c, #4b4b4b, #1a1a1a);
-            color: #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            animation: glow 2s infinite;
-        }
-
-        p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #cfcfcf;
-        }
-
-        .intro-box {
-            padding: 20px 40px;
-            border: 2px solid rgba(0, 255, 247, 0.6);
-            border-radius: 12px;
-            background: rgba(30, 30, 30, 0.8);
-            box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
-            backdrop-filter: blur(6px);
-        }
-
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px #00fff7; }
-            50% { text-shadow: 0 0 20px #00fff7; }
-            100% { text-shadow: 0 0 10px #00fff7; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lamatic Bot - Sally</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c2c2c, #4b4b4b, #1a1a1a);
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      animation: glow 2s infinite;
+    }
+    p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #cfcfcf;
+    }
+    .intro-box {
+      padding: 20px 40px;
+      border: 2px solid rgba(0, 255, 247, 0.6);
+      border-radius: 12px;
+      background: rgba(30, 30, 30, 0.8);
+      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
+      backdrop-filter: blur(6px);
+    }
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #00fff7; }
+      50% { text-shadow: 0 0 20px #00fff7; }
+      100% { text-shadow: 0 0 10px #00fff7; }
+    }
+  </style>
 </head>
 <body>
-    <div class="intro-box">
-        <h1>🤖 Welcome to Sally!</h1>
-        <p>Lamatic's friendly AI bot is here to help you explore AI agent automation. 
-        Ask me anything about Lamatic, and I'll guide you like your own virtual AI assistant!</p>
-    </div>
-
-    <div id="lamatic-chat-root"></div>
-
-    <script>
-        // 1️⃣ Persistent User ID
-        let lamaticUserId = localStorage.getItem('lamaticUserId');
-        if (!lamaticUserId) {
-            lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('lamaticUserId', lamaticUserId);
-        }
-        console.log("Lamatic User ID:", lamaticUserId); 
-
-        // 2️⃣ Project Info
+  <div class="intro-box">
+    <h1>🤖 Welcome to Sally!</h1>
+    <p>Lamatic's friendly AI bot is here to help you explore AI agent automation.
+    Ask me anything about Lamatic, and I'll guide you like your own virtual AI assistant!</p>
+  </div>
+  <div id="lamatic-chat-root"></div>
+  <script async>
+    (function () {
+      document.addEventListener("DOMContentLoaded", function () {
         const PROJECT_ID = '99ca9e13-c53c-467b-9bfa-0395920d7db4';
         const FLOW_ID = '80de4949-56a6-4989-9d8a-35e439db15a8';
         const API_URL = 'https://jayamsorganization109-testproject981.lamatic.dev';
 
-        // Attach dataset to chat root
-        const root = document.getElementById('lamatic-chat-root');
+        // Generate or retrieve userId
+        let lamaticUserId = localStorage.getItem('lamaticUserId');
+        if (!lamaticUserId) {
+          lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('lamaticUserId', lamaticUserId);
+        }
+        console.log("Lamatic User ID:", lamaticUserId);
+
+        // Create the root element
+        const root = document.createElement("div");
+        root.id = "lamatic-chat-root";
         root.dataset.apiUrl = API_URL;
         root.dataset.flowId = FLOW_ID;
         root.dataset.projectId = PROJECT_ID;
-        root.dataset.userId = lamaticUserId; 
+        root.dataset.userId = lamaticUserId;
+        document.body.appendChild(root);
 
-        // Load the widget
+        // Set CHAT_DIALOG_CONFIG
+        window.CHAT_DIALOG_CONFIG = {
+          botName: 'Mini-Sally',
+          apiUrl: API_URL,
+          workflowId: FLOW_ID,
+          userId: lamaticUserId,
+          policyUrl: 'https://lamatic.ai/docs/legal/privacy-policy',
+          position: 'right',
+          errorMessage: 'Oops! Something went wrong. Please try again.',
+          primaryColor: '#000000',
+          headerBgColor: '#000000',
+          headerTextColor: '#FFFFFF',
+          userMessageBgColor: '#225ac9',
+          agentMessageBgColor: '#1b376f',
+          suggestionBgColor: '#82a2e3',
+          suggestionTextColor: '#ffffff',
+          userMessageTextColor: '#FFFFFF',
+          agentMessageTextColor: '#ffffff'
+        };
+
+        // Load the script
         const script = document.createElement("script");
         script.type = "module";
         script.src = `https://widget.lamatic.ai/chat-v2?projectId=${PROJECT_ID}`;
         document.body.appendChild(script);
 
-        // 3️⃣ Auto-open & style widget on ready
+        // Set userId and style when widget is ready
         window.addEventListener('lamaticChatWidgetReady', function() {
-            if (window.LamaticChatWidget) {
-                window.LamaticChatWidget.setUserId(lamaticUserId);
-                window.LamaticChatWidget.open();
-            }
+          if (window.LamaticChatWidget) {
+            window.LamaticChatWidget.setUserId(lamaticUserId);
+            window.LamaticChatWidget.open();
+            const style = document.createElement('style');
+            style.innerHTML = `
+              #lamatic-chat-root [id^="lam-chat-message-bubble-"] {
+                font-size: 14px !important;
+                padding: 10px 14px !important;
+                line-height: 1.4 !important;
+              }
+              #lamatic-chat-root .lam-chat-message-input {
+                font-size: 14px !important;
+              }
+            `;
+            document.head.appendChild(style);
+          }
         });
-    </script>
+      });
+    })();
+  </script>
 </body>
 </html>
