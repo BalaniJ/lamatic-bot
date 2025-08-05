@@ -52,10 +52,10 @@
     </div>
     <div id="lamatic-chat-root"></div>
     <script>
-        // 1️⃣ Persistent User ID
+        // 1️⃣ Persistent User ID (simpler format)
         let lamaticUserId = localStorage.getItem('lamaticUserId');
         if (!lamaticUserId) {
-            lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
+            lamaticUserId = 'user' + Math.floor(Math.random() * 1000000); // e.g., user123456
             localStorage.setItem('lamaticUserId', lamaticUserId);
         }
         console.log("Lamatic User ID:", lamaticUserId);
@@ -72,13 +72,30 @@
         root.dataset.projectId = PROJECT_ID;
         root.dataset.userId = lamaticUserId;
 
-        // 4️⃣ Intercept fetch to log payload
+        // 4️⃣ Intercept fetch to log payload and response
         const originalFetch = window.fetch;
         window.fetch = async function(url, options) {
             if (url.includes('/widget/chat') && options.method === 'POST') {
                 console.log('Intercepted /widget/chat payload:', JSON.parse(options.body));
+                options.headers = {
+                    ...options.headers,
+                    'x-project-id': PROJECT_ID
+                };
             }
-            return originalFetch.apply(this, arguments);
+            try {
+                const response = await originalFetch.apply(this, arguments);
+                if (url.includes('/widget/chat')) {
+                    console.log('Server response status:', response.status);
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.log('Server error response:', errorText);
+                    }
+                }
+                return response;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                throw error;
+            }
         };
 
         // 5️⃣ Load the widget
@@ -96,11 +113,14 @@
                 // Uniform font & bubble sizing
                 const style = document.createElement('style');
                 style.innerHTML = `
-                    #lamatic-chat-root [id^="lam-chat-message-bubble-"] {
+                    #lamatic-chat-root [id^="lam-chat-message-bubble-"],
+                    #lamatic-chat-root .lam-chat-user-message-content-*,
+                    #lamatic-chat-root .lam-chat-bot-message-content-* {
                         font-size: 14px !important;
                         padding: 10px 14px !important;
                         line-height: 1.4 !important;
                         color: #ffffff !important;
+                        background-color: transparent !important;
                     }
                     #lamatic-chat-root .lam-chat-message-input {
                         font-size: 14px !important;
