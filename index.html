@@ -3,11 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lamatic Bot</title>
+  <title>Lamatic Bot - Sally</title>
+  <style>
+    /* Metallic gradient background */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c2c2c, #4b4b4b, #1a1a1a);
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #cfcfcf;
+    }
+
+    /* Futuristic glow border box for content */
+    .intro-box {
+      padding: 20px 40px;
+      border: 2px solid rgba(0, 255, 247, 0.6);
+      border-radius: 12px;
+      background: rgba(30, 30, 30, 0.8);
+      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Smooth animation for text glow */
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #00fff7; }
+      50% { text-shadow: 0 0 20px #00fff7; }
+      100% { text-shadow: 0 0 10px #00fff7; }
+    }
+
+    h1 {
+      animation: glow 2s infinite;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Lamatic Bot</h1>
-  <p>Ask me anything about Lamatic!</p>
+  <div class="intro-box">
+    <h1>🤖 Welcome to Sally!</h1>
+    <p>Lamatic's friendly AI bot is here to help you explore AI agent automation. 
+    Ask me anything about Lamatic, and I'll guide you like your own virtual AI assistant!</p>
+  </div>
+
+  <div id="lamatic-chat-root"></div>
 
   <script>
     // Persistent User ID via localStorage
@@ -17,25 +72,26 @@
       localStorage.setItem('lamaticUserId', lamaticUserId);
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const PROJECT_ID = 'YOUR_PROJECT_ID'; // Replace with Lamatic Project ID
-      const FLOW_ID = 'YOUR_FLOW_ID';       // Replace with Flow ID
-      const API_URL = 'YOUR_API_URL';       // From Lamatic deployment
+    const PROJECT_ID = '99ca9e13-c53c-467b-9bfa-0395920d7db4';
+    const FLOW_ID = '80de4949-56a6-4989-9d8a-35e439db15a8';
+    const API_URL = 'https://jayamsorganization109-testproject981.lamatic.dev';
 
-      // Root element for widget
-      const root = document.createElement("div");
-      root.id = "lamatic-chat-root";
-      root.dataset.apiUrl = API_URL;
-      root.dataset.flowId = FLOW_ID;
-      root.dataset.projectId = PROJECT_ID;
-      root.dataset.userId = lamaticUserId; // This ensures persistent memory per user
-      document.body.appendChild(root);
+    const root = document.getElementById('lamatic-chat-root');
+    root.dataset.apiUrl = API_URL;
+    root.dataset.flowId = FLOW_ID;
+    root.dataset.projectId = PROJECT_ID;
+    root.dataset.userId = lamaticUserId;
 
-      // Load widget script
-      const script = document.createElement("script");
-      script.type = "module";
-      script.src = `https://widget.lamatic.ai/chat-v2?projectId=${PROJECT_ID}`;
-      document.body.appendChild(script);
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = `https://widget.lamatic.ai/chat-v2?projectId=${PROJECT_ID}`;
+    document.body.appendChild(script);
+
+    // Optional: Auto-open the widget on page load for demo
+    window.addEventListener('lamaticChatWidgetReady', function() {
+      if (window.LamaticChatWidget) {
+        window.LamaticChatWidget.open();
+      }
     });
   </script>
 </body>
