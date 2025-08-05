@@ -59,16 +59,25 @@
   <div id="lamatic-chat-root"></div>
 
   <script>
-    // Project Info
+    // 1️⃣ Persistent User ID
+    let lamaticUserId = localStorage.getItem('lamaticUserId');
+    if (!lamaticUserId) {
+      lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('lamaticUserId', lamaticUserId);
+    }
+    console.log("Lamatic User ID:", lamaticUserId); // For debugging
+
+    // 2️⃣ Project Info
     const PROJECT_ID = '99ca9e13-c53c-467b-9bfa-0395920d7db4';
     const FLOW_ID = '80de4949-56a6-4989-9d8a-35e439db15a8';
     const API_URL = 'https://jayamsorganization109-testproject981.lamatic.dev';
 
-    // Attach dataset to chat root (no userId, let Lamatic handle it)
+    // Attach dataset to chat root
     const root = document.getElementById('lamatic-chat-root');
     root.dataset.apiUrl = API_URL;
     root.dataset.flowId = FLOW_ID;
     root.dataset.projectId = PROJECT_ID;
+    root.dataset.userId = lamaticUserId; // ✅ Force widget to use same ID
 
     // Load the widget
     const script = document.createElement("script");
@@ -76,10 +85,26 @@
     script.src = `https://widget.lamatic.ai/chat-v2?projectId=${PROJECT_ID}`;
     document.body.appendChild(script);
 
-    // Optional: auto-open widget on page load
+    // 3️⃣ Auto-open & force userId in widget
     window.addEventListener('lamaticChatWidgetReady', function() {
       if (window.LamaticChatWidget) {
+        window.LamaticChatWidget.setUserId(lamaticUserId);
         window.LamaticChatWidget.open();
+
+        // 4️⃣ Make fonts and message boxes uniform
+        const style = document.createElement('style');
+        style.innerHTML = `
+          #lamatic-chat-root .lam-chat-message-bubble-user,
+          #lamatic-chat-root .lam-chat-message-bubble-bot {
+            font-size: 14px !important;
+            padding: 10px 14px !important;
+            line-height: 1.4 !important;
+          }
+          #lamatic-chat-root .lam-chat-message-input {
+            font-size: 14px !important;
+          }
+        `;
+        document.head.appendChild(style);
       }
     });
   </script>
