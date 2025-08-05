@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lamatic Bot</title>
+</head>
+<body>
+  <h1>Welcome to Lamatic Bot</h1>
+  <p>Ask me anything about Lamatic!</p>
+
+  <script>
+    // Persistent User ID via localStorage
+    let lamaticUserId = localStorage.getItem('lamaticUserId');
+    if (!lamaticUserId) {
+      lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('lamaticUserId', lamaticUserId);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const PROJECT_ID = 'YOUR_PROJECT_ID'; // Replace with Lamatic Project ID
+      const FLOW_ID = 'YOUR_FLOW_ID';       // Replace with Flow ID
+      const API_URL = 'YOUR_API_URL';       // From Lamatic deployment
+
+      // Root element for widget
+      const root = document.createElement("div");
+      root.id = "lamatic-chat-root";
+      root.dataset.apiUrl = API_URL;
+      root.dataset.flowId = FLOW_ID;
+      root.dataset.projectId = PROJECT_ID;
+      root.dataset.userId = lamaticUserId; // This ensures persistent memory per user
+      document.body.appendChild(root);
+
+      // Load widget script
+      const script = document.createElement("script");
+      script.type = "module";
+      script.src = `https://widget.lamatic.ai/chat-v2?projectId=${PROJECT_ID}`;
+      document.body.appendChild(script);
+    });
+  </script>
+</body>
+</html>
