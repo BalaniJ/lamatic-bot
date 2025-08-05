@@ -51,44 +51,58 @@
         Ask me anything about Lamatic, and I'll guide you like your own virtual AI assistant!</p>
     </div>
 
-    <script async src="https://widget.lamatic.ai/chat/emojiPicker.js"></script>
-    <script async src="https://widget.lamatic.ai/chat/index.js"></script>
+    <script async src="https://widget.lamatic.ai/chat/emojiPicker.js" onload="checkScriptsLoaded()"></script>
+    <script async src="https://widget.lamatic.ai/chat/index.js" onload="checkScriptsLoaded()"></script>
     <script>
-        // Wait for all scripts and the DOM to be ready
-        window.addEventListener('DOMContentLoaded', function() {
-            // Check if ChatDialog is available after scripts have loaded
+        let scriptsLoadedCount = 0;
+        const totalScripts = 2;
+        let configReady = false;
+
+        function checkScriptsLoaded() {
+            scriptsLoadedCount++;
+            if (scriptsLoadedCount === totalScripts && configReady) {
+                initializeChatDialog();
+            }
+        }
+
+        function initializeChatDialog() {
+            // Set Lamatic config
+            let lamaticUserId = localStorage.getItem('lamaticUserId');
+            if (!lamaticUserId) {
+                lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('lamaticUserId', lamaticUserId);
+            }
+            console.log("Lamatic User ID:", lamaticUserId);
+
+            var CHAT_DIALOG_CONFIG = {
+                botName: 'Mini-Sally', 
+                suggestions: ['What is lamatic?', 'How do I add data to my chatbot?', 'How do I deploy my agent?'],
+                policyUrl: 'https://lamatic.ai/docs/legal/privacy-policy',
+                apiUrl: 'https://jayamsorganization109-testproject981.lamatic.dev',
+                workflowId: '80de4949-56a6-4989-9d8a-35e439db15a8',
+                chatHeaderBgColor: '#000000', 
+                imageUrl: 'https://img.freepik.com/premium-vector/robot-android-super-hero_111928-7.jpg?w=826',
+                userMessageBgColor: '#225ac9',
+                userMessageTextColor: '#FFFFFF',
+                agentMessageBgColor: '#1b376f',
+                agentMessageTextColor: '#ffffff',
+                position: 'right',
+                userId: lamaticUserId, 
+                errorMessage: 'Oops! Something went wrong. Please try again.',
+                floatingButtonIcon: '💬'
+            };
+            
             if (typeof ChatDialog !== 'undefined') {
-                // Set Lamatic config
-                let lamaticUserId = localStorage.getItem('lamaticUserId');
-                if (!lamaticUserId) {
-                    lamaticUserId = 'user-' + Math.random().toString(36).substr(2, 9);
-                    localStorage.setItem('lamaticUserId', lamaticUserId);
-                }
-                console.log("Lamatic User ID:", lamaticUserId);
-
-                var CHAT_DIALOG_CONFIG = {
-                    botName: 'Mini-Sally', 
-                    suggestions: ['What is lamatic?', 'How do I add data to my chatbot?', 'How do I deploy my agent?'],
-                    policyUrl: 'https://lamatic.ai/docs/legal/privacy-policy',
-                    apiUrl: 'https://jayamsorganization109-testproject981.lamatic.dev', // You must verify this URL in Lamatic
-                    workflowId: '80de4949-56a6-4989-9d8a-35e439db15a8',
-                    chatHeaderBgColor: '#000000', 
-                    imageUrl: 'https://img.freepik.com/premium-vector/robot-android-super-hero_111928-7.jpg?w=826',
-                    userMessageBgColor: '#225ac9',
-                    userMessageTextColor: '#FFFFFF',
-                    agentMessageBgColor: '#1b376f',
-                    agentMessageTextColor: '#ffffff',
-                    position: 'right',
-                    userId: lamaticUserId, 
-                    errorMessage: 'Oops! Something went wrong. Please try again.',
-                    floatingButtonIcon: '💬'
-                };
-
-                // Load Lamatic dialog
                 new ChatDialog(CHAT_DIALOG_CONFIG);
             } else {
-                console.error("ChatDialog is not defined. One of the widget scripts may have failed to load.");
+                console.error("ChatDialog is still not defined after all scripts have loaded.");
             }
+        }
+
+        // Wait for all scripts and the DOM to be ready
+        window.addEventListener('DOMContentLoaded', function() {
+            configReady = true;
+            checkScriptsLoaded();
         });
     </script>
 </body>
